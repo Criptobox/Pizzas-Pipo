@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pizzas Pipo · Catálogo</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a0a; color: #fff; min-height: 100vh; }
+header { background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%); padding: 2rem; text-align: center; box-shadow: 0 4px 20px rgba(211,47,47,0.4); }
+header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+header p { opacity: 0.9; }
+main { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+.card { background: #1a1a1a; border-radius: 12px; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; border: 1px solid #333; }
+.card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(211,47,47,0.3); }
+.card-img { width: 100%; height: 200px; object-fit: cover; background: #2a2a2a; }
+.card-body { padding: 1.25rem; }
+.card-body h3 { color: #ffeb3b; margin-bottom: 0.5rem; }
+.card-body p { color: #ccc; font-size: 0.9rem; margin-bottom: 1rem; }
+.price { font-size: 1.5rem; font-weight: bold; color: #4caf50; }
+.btn { background: #d32f2f; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s; }
+.btn:hover { background: #b71c1c; }
+footer { text-align: center; padding: 2rem; color: #666; margin-top: 2rem; border-top: 1px solid #222; }
+@media (max-width: 600px) { header h1 { font-size: 1.8rem; } }
+</style>
+</head>
+<body>
+<header>
+<h1>🍕 Pizzas Pipo</h1>
+<p>Catálogo digital · Sabor italiano artesanal</p>
+</header>
+<main>
+<h2>Nuestras Pizzas</h2>
+<div class="grid">
+<div class="card"><div class="card-img" style="background:linear-gradient(135deg,#8b4513,#d2691e);"></div><div class="card-body"><h3>Margarita</h3><p>Tomate, mozzarella fresca, albahaca, aceite de oliva</p><div class="price">$8.99</div><button class="btn">Agregar</button></div></div>
+<div class="card"><div class="card-img" style="background:linear-gradient(135deg,#8b0000,#ff6347);"></div><div class="card-body"><h3>Pepperoni</h3><p>Tomate, mozzarella, pepperoni extra, orégano</p><div class="price">$10.99</div><button class="btn">Agregar</button></div></div>
+<div class="card"><div class="card-img" style="background:linear-gradient(135deg,#228b22,#90ee90);"></div><div class="card-body"><h3>Cuatro Quesos</h3><p>Mozzarella, gorgonzola, parmesano, provolone</p><div class="price">$12.99</div><button class="btn">Agregar</button></div></div>
+<div class="card"><div class="card-img" style="background:linear-gradient(135deg,#4b0082,#9370db);"></div><div class="card-body"><h3>Hawaiana</h3><p>Tomate, mozzarella, jamón, piña</p><div class="price">$11.99</div><button class="btn">Agregar</button></div></div>
+<div class="card"><div class="card-img" style="background:linear-gradient(135deg,#ff4500,#ffa500);"></div><div class="card-body"><h3>Diábola</h3><p>Tomate, mozzarella, salchicha picante, chiles</p><div class="price">$12.49</div><button class="btn">Agregar</button></div></div>
+<div class="card"><div class="card-img" style="background:linear-gradient(135deg,#2f4f4f,#20b2aa);"></div><div class="card-body"><h3>Marinara</h3><p>Tomate, ajo, orégano, aceite de oliva (sin queso)</p><div class="price">$7.99</div><button class="btn">Agregar</button></div></div>
+</div>
+</main>
+<footer><p>© 2026 Pizzas Pipo · Hecho con 🍕</p></footer>
+</body>
+</html>
