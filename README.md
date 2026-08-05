@@ -2,7 +2,7 @@
 
 Catálogo digital de pizzas con carrito, panel admin, ofertas, favoritos, modo claro/oscuro y PWA. Listo para GitHub Pages.
 
-## Características v4
+## Características v5
 
 - **Panel Admin** (tocar 3 veces el logo, contraseña: `pipo123`):
   - Editar productos (nombre, descripción, precio, fotos, ingredientes, tamaños, extras)
@@ -43,7 +43,7 @@ Catálogo digital de pizzas con carrito, panel admin, ofertas, favoritos, modo c
    ```bash
    git init
    git add .
-   git commit -m "Catálogo Pizzas Pipo v4"
+   git commit -m "Catálogo Pizzas Pipo v5"
    git branch -M main
    git remote add origin https://github.com/TU_USUARIO/pizzas-pipo.git
    git push -u origin main
