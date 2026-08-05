@@ -3,44 +3,261 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pizzas Pipo · Catálogo</title>
+<title>Pizzas Pipo - Catálogo Digital</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a0a; color: #fff; min-height: 100vh; }
-header { background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%); padding: 2rem; text-align: center; box-shadow: 0 4px 20px rgba(211,47,47,0.4); }
-header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
-header p { opacity: 0.9; }
-main { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
-.card { background: #1a1a1a; border-radius: 12px; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; border: 1px solid #333; }
-.card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(211,47,47,0.3); }
-.card-img { width: 100%; height: 200px; object-fit: cover; background: #2a2a2a; }
-.card-body { padding: 1.25rem; }
-.card-body h3 { color: #ffeb3b; margin-bottom: 0.5rem; }
-.card-body p { color: #ccc; font-size: 0.9rem; margin-bottom: 1rem; }
-.price { font-size: 1.5rem; font-weight: bold; color: #4caf50; }
-.btn { background: #d32f2f; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s; }
-.btn:hover { background: #b71c1c; }
-footer { text-align: center; padding: 2rem; color: #666; margin-top: 2rem; border-top: 1px solid #222; }
-@media (max-width: 600px) { header h1 { font-size: 1.8rem; } }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    -webkit-font-smoothing: antialiased;
+}
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #1a1a1a; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+.glass-panel {
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+}
+.btn-glow-green:hover { box-shadow: 0 0 15px rgba(34, 197, 94, 0.4); }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.6s ease-out backwards; }
+.card-hover { transition: all 0.3s ease; }
+.card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
 </style>
 </head>
-<body>
-<header>
-<h1>🍕 Pizzas Pipo</h1>
-<p>Catálogo digital · Sabor italiano artesanal</p>
+<body class="min-h-screen flex flex-col items-center pb-20">
+
+<header class="w-full max-w-[800px] px-6 py-5 flex justify-between items-center sticky top-0 z-50 bg-[#121212]/90 backdrop-blur-md border-b border-white/5">
+    <div class="flex items-center gap-3 cursor-pointer group">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center text-white shadow-lg shadow-orange-900/30 group-hover:scale-105 transition-transform duration-300">
+            <i class="fa-solid fa-pizza-slice text-lg"></i>
+        </div>
+        <div class="flex flex-col leading-tight">
+            <span class="text-xs text-gray-400 font-medium">Bienvenido a</span>
+            <span class="text-lg font-bold tracking-tight">Pizzas Pipo</span>
+        </div>
+    </div>
+    <button onclick="toggleCart()" class="relative w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors text-gray-300 hover:text-white">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span id="cart-count" class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
+    </button>
 </header>
-<main>
-<h2>Nuestras Pizzas</h2>
-<div class="grid">
-<div class="card"><div class="card-img" style="background:linear-gradient(135deg,#8b4513,#d2691e);"></div><div class="card-body"><h3>Margarita</h3><p>Tomate, mozzarella fresca, albahaca, aceite de oliva</p><div class="price">$8.99</div><button class="btn">Agregar</button></div></div>
-<div class="card"><div class="card-img" style="background:linear-gradient(135deg,#8b0000,#ff6347);"></div><div class="card-body"><h3>Pepperoni</h3><p>Tomate, mozzarella, pepperoni extra, orégano</p><div class="price">$10.99</div><button class="btn">Agregar</button></div></div>
-<div class="card"><div class="card-img" style="background:linear-gradient(135deg,#228b22,#90ee90);"></div><div class="card-body"><h3>Cuatro Quesos</h3><p>Mozzarella, gorgonzola, parmesano, provolone</p><div class="price">$12.99</div><button class="btn">Agregar</button></div></div>
-<div class="card"><div class="card-img" style="background:linear-gradient(135deg,#4b0082,#9370db);"></div><div class="card-body"><h3>Hawaiana</h3><p>Tomate, mozzarella, jamón, piña</p><div class="price">$11.99</div><button class="btn">Agregar</button></div></div>
-<div class="card"><div class="card-img" style="background:linear-gradient(135deg,#ff4500,#ffa500);"></div><div class="card-body"><h3>Diábola</h3><p>Tomate, mozzarella, salchicha picante, chiles</p><div class="price">$12.49</div><button class="btn">Agregar</button></div></div>
-<div class="card"><div class="card-img" style="background:linear-gradient(135deg,#2f4f4f,#20b2aa);"></div><div class="card-body"><h3>Marinara</h3><p>Tomate, ajo, orégano, aceite de oliva (sin queso)</p><div class="price">$7.99</div><button class="btn">Agregar</button></div></div>
-</div>
+
+<main class="w-full max-w-[800px] px-6 mt-8 space-y-8">
+
+    <section class="space-y-4 fade-up">
+        <h1 class="text-3xl md:text-4xl font-bold leading-tight text-gray-100">
+            Las mejores pizzas artesanales al horno de leña
+        </h1>
+        <p class="text-gray-400 text-base md:text-lg leading-relaxed max-w-2xl">
+            Hechas al horno de leña con ingredientes frescos. Pide por WhatsApp y recoge en local o pide delivery.
+        </p>
+        <div class="flex flex-wrap gap-3 items-center pt-2">
+            <span class="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1.5 rounded-full text-sm font-medium">
+                <i class="fa-solid fa-circle text-[8px] animate-pulse"></i> Abierto ahora · Cierra 23:00
+            </span>
+            <a href="https://wa.me/5312345678" class="inline-flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 px-3 py-1.5 rounded-full text-sm transition-all">
+                <i class="fa-brands fa-whatsapp text-gray-400"></i> +53 1234 5678
+            </a>
+        </div>
+        <div class="flex flex-wrap gap-3 pt-2">
+            <a href="https://wa.me/5312345678?text=Hola%20Pizzas%20Pipo%2C%20quiero%20hacer%20un%20pedido" class="btn-glow-green inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-full font-semibold transition-all shadow-lg shadow-emerald-900/20">
+                <i class="fa-brands fa-whatsapp text-lg"></i> Pedir por WhatsApp
+            </a>
+            <button class="inline-flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-200 px-6 py-3 rounded-full font-medium transition-all">
+                <i class="fa-solid fa-location-dot"></i> Cómo llegar
+            </button>
+        </div>
+        <div class="relative mt-4 group">
+            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-gray-300 transition-colors"></i>
+            <input type="text" id="search" placeholder="Buscar pizza, bebida, extra..." 
+                class="w-full bg-white/[0.04] border border-white/10 focus:border-white/20 rounded-xl py-3 pl-11 pr-4 text-gray-200 placeholder-gray-600 outline-none transition-all focus:bg-white/[0.06]">
+        </div>
+    </section>
+
+    <section class="flex overflow-x-auto pb-2 gap-3 no-scrollbar">
+        <button class="filter-btn flex-shrink-0 flex items-center gap-2 bg-white text-black px-5 py-2.5 rounded-full font-semibold text-sm shadow-lg shadow-black/20" data-cat="all">
+            <span>🍽️</span> Todos
+        </button>
+        <button class="filter-btn flex-shrink-0 flex items-center gap-2 bg-white/5 hover:bg-white/10 text-gray-300 px-5 py-2.5 rounded-full font-semibold text-sm transition-all" data-cat="pizzas">
+            <span>🍕</span> Pizzas
+        </button>
+        <button class="filter-btn flex-shrink-0 flex items-center gap-2 bg-white/5 hover:bg-white/10 text-gray-300 px-5 py-2.5 rounded-full font-semibold text-sm transition-all" data-cat="bebidas">
+            <span>🥤</span> Bebidas
+        </button>
+        <button class="filter-btn flex-shrink-0 flex items-center gap-2 bg-white/5 hover:bg-white/10 text-gray-300 px-5 py-2.5 rounded-full font-semibold text-sm transition-all" data-cat="extras">
+            <span>🧄</span> Extras
+        </button>
+    </section>
+
+    <section id="products" class="grid grid-cols-1 sm:grid-cols-2 gap-5 pb-12"></section>
+
+    <section class="glass-panel rounded-3xl p-6 space-y-5 mb-8 fade-up">
+        <h3 class="flex items-center gap-2 text-lg font-bold text-white">
+            <i class="fa-solid fa-store text-red-500"></i> Información del local
+        </h3>
+        <div class="space-y-4">
+            <a href="#" class="group flex items-start gap-4 p-2 -mx-2 rounded-xl hover:bg-white/5 transition-colors">
+                <div class="mt-1 w-5 text-center text-gray-500 group-hover:text-gray-300"><i class="fa-solid fa-location-dot"></i></div>
+                <div class="flex-1"><p class="text-gray-300 text-sm md:text-base">Calle 23 #456 entre A y B, La Habana</p></div>
+                <i class="fa-solid fa-chevron-right text-gray-600 text-xs self-center group-hover:text-gray-400"></i>
+            </a>
+            <a href="https://wa.me/5312345678" class="group flex items-start gap-4 p-2 -mx-2 rounded-xl hover:bg-white/5 transition-colors">
+                <div class="mt-1 w-5 text-center text-gray-500 group-hover:text-gray-300"><i class="fa-solid fa-phone"></i></div>
+                <div class="flex-1"><p class="text-gray-300 text-sm md:text-base">+53 1234 5678</p></div>
+                <i class="fa-solid fa-chevron-right text-gray-600 text-xs self-center group-hover:text-gray-400"></i>
+            </a>
+            <div class="flex items-start gap-4 p-2 -mx-2 rounded-xl">
+                <div class="mt-1 w-5 text-center text-gray-500"><i class="fa-regular fa-clock"></i></div>
+                <div class="flex-1"><p class="text-emerald-400 text-sm md:text-base font-medium">Abierto · Cierra 23:00</p></div>
+            </div>
+        </div>
+    </section>
 </main>
-<footer><p>© 2026 Pizzas Pipo · Hecho con 🍕</p></footer>
+
+<footer class="w-full max-w-[800px] px-6 pb-12 text-center space-y-2 opacity-60">
+    <p class="text-xs text-gray-500 font-medium">Pizzas Pipo · Catálogo digital</p>
+    <p class="text-[10px] text-gray-600 flex items-center justify-center gap-1">
+        Hecho con <span class="text-orange-500">🍕</span> por Pizzas Pipo
+    </p>
+</footer>
+
+<div id="cart-panel" class="fixed top-0 right-0 h-full w-full sm:w-96 bg-[#1a1a1a] border-l border-white/10 transform translate-x-full transition-transform duration-300 z-50 overflow-y-auto">
+    <div class="p-6 border-b border-white/10 flex justify-between items-center">
+        <h3 class="text-lg font-bold">Tu carrito</h3>
+        <button onclick="toggleCart()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    <div id="cart-items" class="p-6 space-y-4"></div>
+    <div class="p-6 border-t border-white/10 sticky bottom-0 bg-[#1a1a1a]">
+        <div class="flex justify-between mb-4">
+            <span class="text-gray-400">Total</span>
+            <span id="cart-total" class="text-2xl font-bold">$0</span>
+        </div>
+        <a href="https://wa.me/5312345678" id="checkout-btn" class="btn-glow-green block text-center bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-full font-semibold transition-all">
+            <i class="fa-brands fa-whatsapp mr-2"></i>Pedir por WhatsApp
+        </a>
+    </div>
+</div>
+
+<script>
+const products = [
+    { id: 1, name: 'Margarita', desc: 'Tomate, mozzarella fresca, albahaca, aceite de oliva', price: 100, cat: 'pizzas', img: 'https://em-content.zobj.net/source/apple/391/pizza_1f355.png' },
+    { id: 2, name: 'Pepperoni', desc: 'Tomate, mozzarella, pepperoni extra, orégano', price: 120, cat: 'pizzas', img: 'https://em-content.zobj.net/source/apple/391/pizza_1f355.png' },
+    { id: 3, name: 'Cuatro Quesos', desc: 'Mozzarella, gorgonzola, parmesano, provolone', price: 130, cat: 'pizzas', img: 'https://em-content.zobj.net/source/apple/391/pizza_1f355.png' },
+    { id: 4, name: 'Hawaiana', desc: 'Tomate, mozzarella, jamón, piña', price: 115, cat: 'pizzas', img: 'https://em-content.zobj.net/source/apple/391/pizza_1f355.png' },
+    { id: 5, name: 'Diábola', desc: 'Tomate, mozzarella, salchicha picante, chiles', price: 125, cat: 'pizzas', img: 'https://em-content.zobj.net/source/apple/391/pizza_1f355.png' },
+    { id: 6, name: 'Marinara', desc: 'Tomate, ajo, orégano, aceite de oliva (sin queso)', price: 90, cat: 'pizzas', img: 'https://em-content.zobj.net/source/apple/391/pizza_1f355.png' },
+    { id: 7, name: 'Coca-Cola 500ml', desc: 'Bebida refrescante', price: 25, cat: 'bebidas', img: 'https://em-content.zobj.net/source/apple/391/cup-with-straw_1f964.png' },
+    { id: 8, name: 'Agua mineral 500ml', desc: 'Sin gas', price: 15, cat: 'bebidas', img: 'https://em-content.zobj.net/source/apple/391/potable-water_1f6b1.png' },
+    { id: 9, name: 'Ajo extra', desc: 'Salsa de ajo casera', price: 10, cat: 'extras', img: 'https://em-content.zobj.net/source/apple/391/garlic_1f9c4.png' },
+    { id: 10, name: 'Queso extra', desc: 'Mozzarella adicional', price: 20, cat: 'extras', img: 'https://em-content.zobj.net/source/apple/391/cheese-wedge_1f9c0.png' }
+];
+
+let cart = JSON.parse(localStorage.getItem('pipo_cart') || '[]');
+let currentCat = 'all';
+
+function render() {
+    const grid = document.getElementById('products');
+    const search = document.getElementById('search').value.toLowerCase();
+    const filtered = products.filter(p => 
+        (currentCat === 'all' || p.cat === currentCat) &&
+        (p.name.toLowerCase().includes(search) || p.desc.toLowerCase().includes(search))
+    );
+    grid.innerHTML = filtered.map((p, i) => `
+        <article class="glass-panel card-hover rounded-3xl p-4 flex flex-col relative group fade-up" style="animation-delay: ${i * 0.05}s">
+            <div class="relative w-full aspect-square rounded-2xl bg-[#161616] mb-4 overflow-hidden flex items-center justify-center">
+                <img src="${p.img}" alt="${p.name}" class="w-24 h-24 object-contain drop-shadow-xl transform group-hover:scale-110 transition-transform duration-500">
+            </div>
+            <div class="space-y-3 px-1">
+                <div>
+                    <h3 class="text-lg font-bold text-white">${p.name}</h3>
+                    <p class="text-sm text-gray-500 mt-0.5">${p.desc}</p>
+                </div>
+                <div class="flex items-end justify-between pt-2">
+                    <span class="text-xl font-bold text-white">$${p.price}</span>
+                    <button onclick="addToCart(${p.id})" class="bg-white hover:bg-gray-200 text-black text-sm font-bold px-5 py-2.5 rounded-full flex items-center gap-2 transition-transform active:scale-95 shadow-md">
+                        <i class="fa-solid fa-plus text-xs"></i> Pedir
+                    </button>
+                </div>
+            </div>
+        </article>
+    `).join('');
+    if (filtered.length === 0) {
+        grid.innerHTML = '<p class="text-gray-500 text-center py-12 col-span-full">No se encontraron productos</p>';
+    }
+}
+
+function addToCart(id) {
+    const p = products.find(x => x.id === id);
+    const existing = cart.find(x => x.id === id);
+    if (existing) existing.qty++;
+    else cart.push({ ...p, qty: 1 });
+    localStorage.setItem('pipo_cart', JSON.stringify(cart));
+    renderCart();
+}
+
+function removeFromCart(id) {
+    cart = cart.filter(x => x.id !== id);
+    localStorage.setItem('pipo_cart', JSON.stringify(cart));
+    renderCart();
+}
+
+function renderCart() {
+    const items = document.getElementById('cart-items');
+    const count = cart.reduce((s, x) => s + x.qty, 0);
+    const total = cart.reduce((s, x) => s + x.qty * x.price, 0);
+    const countEl = document.getElementById('cart-count');
+    countEl.textContent = count;
+    countEl.classList.toggle('hidden', count === 0);
+    document.getElementById('cart-total').textContent = '$' + total;
+    items.innerHTML = cart.length === 0 
+        ? '<p class="text-gray-500 text-center py-12">Tu carrito está vacío</p>'
+        : cart.map(p => `
+            <div class="flex items-center gap-4 glass-panel rounded-2xl p-3">
+                <img src="${p.img}" alt="${p.name}" class="w-12 h-12 object-contain">
+                <div class="flex-1">
+                    <h4 class="font-semibold text-sm">${p.name}</h4>
+                    <p class="text-gray-400 text-xs">$${p.price} × ${p.qty}</p>
+                </div>
+                <button onclick="removeFromCart(${p.id})" class="w-8 h-8 rounded-full bg-red-500/10 hover:bg-red-500/20 text-red-400 flex items-center justify-center">
+                    <i class="fa-solid fa-trash text-xs"></i>
+                </button>
+            </div>
+        `).join('');
+}
+
+function toggleCart() {
+    const panel = document.getElementById('cart-panel');
+    panel.classList.toggle('translate-x-full');
+}
+
+document.getElementById('search').addEventListener('input', render);
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => {
+            b.classList.remove('bg-white', 'text-black');
+            b.classList.add('bg-white/5', 'text-gray-300', 'hover:bg-white/10');
+        });
+        btn.classList.add('bg-white', 'text-black');
+        btn.classList.remove('bg-white/5', 'text-gray-300', 'hover:bg-white/10');
+        currentCat = btn.dataset.cat;
+        render();
+    });
+});
+
+render();
+renderCart();
+</script>
 </body>
 </html>
