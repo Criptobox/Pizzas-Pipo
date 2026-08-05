@@ -7,161 +7,473 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap');
+:root {
+    --bg: #0a0a0f;
+    --bg-2: #14141d;
+    --accent: #ff6b35;
+    --accent-2: #f7931e;
+    --green: #10b981;
+    --red: #ef4444;
+}
+* { -webkit-tap-highlight-color: transparent; }
 body {
     font-family: 'Inter', sans-serif;
-    background-color: #121212;
-    color: #ffffff;
+    background: var(--bg);
+    color: #fff;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
 }
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: #1a1a1a; }
-::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-.glass-panel {
-    background-color: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(10px);
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--accent), var(--accent-2)); border-radius: 3px; }
+.font-display { font-family: 'Playfair Display', serif; }
+
+/* ===== Glass panels ===== */
+.glass {
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.06);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
 }
-.btn-glow-green:hover { box-shadow: 0 0 15px rgba(34, 197, 94, 0.4); }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ===== Hero banner ===== */
+.hero-banner {
+    position: relative;
+    overflow: hidden;
+    border-radius: 28px;
+    background:
+        radial-gradient(ellipse at top right, rgba(255,107,53,0.35) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom left, rgba(247,147,30,0.25) 0%, transparent 50%),
+        linear-gradient(135deg, #1a0f0a 0%, #2d1810 50%, #1a0f0a 100%);
+}
+.hero-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.04) 1px, transparent 1px),
+        radial-gradient(circle at 80% 70%, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 40px 40px, 60px 60px;
+    animation: drift 30s linear infinite;
+}
+@keyframes drift {
+    from { background-position: 0 0, 0 0; }
+    to { background-position: 40px 40px, -60px 60px; }
+}
+.hero-pizza {
+    font-size: clamp(120px, 30vw, 220px);
+    filter: drop-shadow(0 30px 60px rgba(255,107,53,0.5));
+    animation: float 6s ease-in-out infinite;
+}
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+}
+.hero-glow {
+    position: absolute;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(255,107,53,0.4) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(40px);
+    animation: pulse 4s ease-in-out infinite;
+}
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.2); opacity: 0.8; }
+}
+
+/* ===== Product cards ===== */
+.product-card {
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+.product-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+    transition: left 0.6s;
+}
+.product-card:hover::after { left: 100%; }
+.product-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 20px 50px rgba(255,107,53,0.25);
+    border-color: rgba(255,107,53,0.4);
+}
+.product-img {
+    width: 100px; height: 100px;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.product-card:hover .product-img {
+    transform: scale(1.15) rotate(-8deg);
+}
+
+/* ===== Shimmer on buttons ===== */
+.btn-shimmer { position: relative; overflow: hidden; }
+.btn-shimmer::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+}
+.btn-shimmer:hover::before { left: 100%; }
+
+/* ===== Entrance animations ===== */
 @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
+    from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
 }
-.fade-up { animation: fadeUp 0.6s ease-out backwards; }
-.card-hover { transition: all 0.3s ease; }
-.card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(100%); }
+    to { opacity: 1; transform: translateX(0); }
+}
+.fade-up { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+.fade-in { animation: fadeIn 1s ease-out backwards; }
+
+/* ===== Status badge pulse ===== */
+.pulse-dot {
+    position: relative;
+}
+.pulse-dot::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: var(--green);
+    opacity: 0.5;
+    animation: pulseDot 2s ease-out infinite;
+}
+@keyframes pulseDot {
+    0% { transform: scale(0.8); opacity: 0.5; }
+    100% { transform: scale(2); opacity: 0; }
+}
+
+/* ===== Category pills ===== */
+.cat-pill { transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.cat-pill:hover { transform: translateY(-2px); }
+.cat-pill.active {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(255,107,53,0.4);
+}
+
+/* ===== Cart badge bounce ===== */
+@keyframes bounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+}
+.bounce { animation: bounce 0.3s ease-out; }
+
+/* ===== Gradient text ===== */
+.gradient-text {
+    background: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ffd700 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ===== Mesh gradient background ===== */
+.mesh-bg {
+    background-color: var(--bg);
+    background-image:
+        radial-gradient(at 0% 0%, rgba(255,107,53,0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(247,147,30,0.06) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(239,68,68,0.05) 0px, transparent 50%);
+}
+
+/* ===== Backdrop overlay when cart open ===== */
+.backdrop {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    z-index: 40;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+.backdrop.open { opacity: 1; pointer-events: auto; }
+
+/* ===== Cart slide-in ===== */
+.cart-panel {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cart-panel.open { transform: translateX(0) !important; }
+
+/* ===== Toast notification ===== */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: linear-gradient(135deg, var(--green), #059669);
+    color: white;
+    padding: 14px 24px;
+    border-radius: 14px;
+    font-weight: 600;
+    box-shadow: 0 10px 30px rgba(16,185,129,0.4);
+    z-index: 100;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
 </style>
 </head>
-<body class="min-h-screen flex flex-col items-center pb-20">
+<body class="mesh-bg min-h-screen flex flex-col items-center pb-20">
 
-<header class="w-full max-w-[800px] px-6 py-5 flex justify-between items-center sticky top-0 z-50 bg-[#121212]/90 backdrop-blur-md border-b border-white/5">
+<!-- Header -->
+<header class="w-full max-w-[900px] px-5 py-4 flex justify-between items-center sticky top-0 z-30 bg-[#0a0a0f]/80 backdrop-blur-xl border-b border-white/5">
     <div class="flex items-center gap-3 cursor-pointer group">
-        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center text-white shadow-lg shadow-orange-900/30 group-hover:scale-105 transition-transform duration-300">
-            <i class="fa-solid fa-pizza-slice text-lg"></i>
+        <div class="relative">
+            <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center text-white shadow-lg shadow-orange-900/40 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                <i class="fa-solid fa-pizza-slice text-xl"></i>
+            </div>
+            <div class="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-[#0a0a0f]"></div>
         </div>
         <div class="flex flex-col leading-tight">
-            <span class="text-xs text-gray-400 font-medium">Bienvenido a</span>
-            <span class="text-lg font-bold tracking-tight">Pizzas Pipo</span>
+            <span class="text-[10px] text-gray-500 font-medium uppercase tracking-wider">Bienvenido a</span>
+            <span class="text-lg font-bold tracking-tight font-display">Pizzas Pipo</span>
         </div>
     </div>
-    <button onclick="toggleCart()" class="relative w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors text-gray-300 hover:text-white">
-        <i class="fa-solid fa-cart-shopping"></i>
-        <span id="cart-count" class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
-    </button>
+    <div class="flex items-center gap-2">
+        <button class="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center transition-all text-gray-300 hover:text-white hover:scale-110">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+        <button onclick="toggleCart()" class="relative w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center transition-all text-gray-300 hover:text-white hover:scale-110">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span id="cart-count" class="absolute -top-1 -right-1 bg-gradient-to-br from-orange-500 to-red-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+        </button>
+    </div>
 </header>
 
-<main class="w-full max-w-[800px] px-6 mt-8 space-y-8">
+<main class="w-full max-w-[900px] px-5 mt-6 space-y-8">
 
-    <section class="space-y-4 fade-up">
-        <h1 class="text-3xl md:text-4xl font-bold leading-tight text-gray-100">
-            Las mejores pizzas artesanales al horno de leña
-        </h1>
-        <p class="text-gray-400 text-base md:text-lg leading-relaxed max-w-2xl">
-            Hechas al horno de leña con ingredientes frescos. Pide por WhatsApp y recoge en local o pide delivery.
-        </p>
-        <div class="flex flex-wrap gap-3 items-center pt-2">
-            <span class="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1.5 rounded-full text-sm font-medium">
-                <i class="fa-solid fa-circle text-[8px] animate-pulse"></i> Abierto ahora · Cierra 23:00
-            </span>
-            <a href="https://wa.me/5312345678" class="inline-flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 px-3 py-1.5 rounded-full text-sm transition-all">
-                <i class="fa-brands fa-whatsapp text-gray-400"></i> +53 1234 5678
-            </a>
-        </div>
-        <div class="flex flex-wrap gap-3 pt-2">
-            <a href="https://wa.me/5312345678?text=Hola%20Pizzas%20Pipo%2C%20quiero%20hacer%20un%20pedido" class="btn-glow-green inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-full font-semibold transition-all shadow-lg shadow-emerald-900/20">
-                <i class="fa-brands fa-whatsapp text-lg"></i> Pedir por WhatsApp
-            </a>
-            <button class="inline-flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-200 px-6 py-3 rounded-full font-medium transition-all">
-                <i class="fa-solid fa-location-dot"></i> Cómo llegar
-            </button>
-        </div>
-        <div class="relative mt-4 group">
-            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-gray-300 transition-colors"></i>
-            <input type="text" id="search" placeholder="Buscar pizza, bebida, extra..." 
-                class="w-full bg-white/[0.04] border border-white/10 focus:border-white/20 rounded-xl py-3 pl-11 pr-4 text-gray-200 placeholder-gray-600 outline-none transition-all focus:bg-white/[0.06]">
+    <!-- ===== HERO BANNER ===== -->
+    <section class="hero-banner p-6 md:p-10 fade-up" style="animation-delay: 0.1s">
+        <div class="hero-glow" style="top: -50px; right: -50px;"></div>
+        <div class="hero-glow" style="bottom: -80px; left: 30%; animation-delay: 2s;"></div>
+        
+        <div class="relative z-10 grid md:grid-cols-2 gap-6 items-center">
+            <div class="space-y-4 text-center md:text-left">
+                <div class="inline-flex items-center gap-2 bg-white/10 border border-white/15 px-3 py-1.5 rounded-full text-xs font-medium">
+                    <span class="pulse-dot w-2 h-2 bg-green-500 rounded-full"></span>
+                    <span class="text-green-400">Abierto ahora</span>
+                    <span class="text-gray-400">· Cierra 23:00</span>
+                </div>
+                <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-black leading-tight">
+                    Pizzas al <span class="gradient-text">horno de leña</span>
+                </h1>
+                <p class="text-gray-300 text-base md:text-lg max-w-md mx-auto md:mx-0">
+                    Masa madre fermentada 24h, ingredientes frescos y el sabor auténtico de Italia en cada bocado.
+                </p>
+                <div class="flex flex-wrap gap-3 justify-center md:justify-start pt-2">
+                    <a href="https://wa.me/5312345678?text=Hola%20Pizzas%20Pipo%2C%20quiero%20hacer%20un%20pedido" 
+                       class="btn-shimmer inline-flex items-center justify-center gap-2 bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-500 hover:to-emerald-400 text-white px-6 py-3 rounded-2xl font-semibold transition-all shadow-lg shadow-green-900/30 hover:shadow-green-500/40 hover:-translate-y-0.5">
+                        <i class="fa-brands fa-whatsapp text-lg"></i> Pedir ahora
+                    </a>
+                    <button class="inline-flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-200 px-6 py-3 rounded-2xl font-medium transition-all hover:-translate-y-0.5">
+                        <i class="fa-solid fa-location-dot"></i> Cómo llegar
+                    </button>
+                </div>
+            </div>
+            <div class="flex justify-center md:justify-end relative">
+                <div class="hero-pizza">🍕</div>
+            </div>
         </div>
     </section>
 
-    <section class="flex overflow-x-auto pb-2 gap-3 no-scrollbar">
-        <button class="filter-btn flex-shrink-0 flex items-center gap-2 bg-white text-black px-5 py-2.5 rounded-full font-semibold text-sm shadow-lg shadow-black/20" data-cat="all">
+    <!-- Quick info bar -->
+    <section class="grid grid-cols-3 gap-3 fade-up" style="animation-delay: 0.2s">
+        <div class="glass rounded-2xl p-4 text-center hover:bg-white/[0.05] transition-all hover:-translate-y-1">
+            <i class="fa-solid fa-fire text-orange-400 text-xl mb-1"></i>
+            <p class="text-xs text-gray-400">Horno de leña</p>
+            <p class="text-sm font-bold">Auténtico</p>
+        </div>
+        <div class="glass rounded-2xl p-4 text-center hover:bg-white/[0.05] transition-all hover:-translate-y-1">
+            <i class="fa-solid fa-clock text-orange-400 text-xl mb-1"></i>
+            <p class="text-xs text-gray-400">Delivery</p>
+            <p class="text-sm font-bold">30-40 min</p>
+        </div>
+        <div class="glass rounded-2xl p-4 text-center hover:bg-white/[0.05] transition-all hover:-translate-y-1">
+            <i class="fa-solid fa-star text-orange-400 text-xl mb-1"></i>
+            <p class="text-xs text-gray-400">Valoración</p>
+            <p class="text-sm font-bold">4.9/5</p>
+        </div>
+    </section>
+
+    <!-- Search bar -->
+    <section class="relative fade-up" style="animation-delay: 0.3s">
+        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
+        <input type="text" id="search" placeholder="Buscar pizza, bebida, extra..." 
+            class="w-full glass rounded-2xl py-3.5 pl-11 pr-4 text-gray-200 placeholder-gray-600 outline-none transition-all focus:border-orange-500/30">
+    </section>
+
+    <!-- Category pills -->
+    <section class="flex overflow-x-auto pb-2 gap-2 no-scrollbar fade-up" style="animation-delay: 0.4s">
+        <button class="cat-pill active flex-shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-2xl font-semibold text-sm" data-cat="all">
             <span>🍽️</span> Todos
         </button>
-        <button class="filter-btn flex-shrink-0 flex items-center gap-2 bg-white/5 hover:bg-white/10 text-gray-300 px-5 py-2.5 rounded-full font-semibold text-sm transition-all" data-cat="pizzas">
+        <button class="cat-pill flex-shrink-0 flex items-center gap-2 bg-white/5 hover:bg-white/10 text-gray-300 px-5 py-2.5 rounded-2xl font-semibold text-sm" data-cat="pizzas">
             <span>🍕</span> Pizzas
         </button>
-        <button class="filter-btn flex-shrink-0 flex items-center gap-2 bg-white/5 hover:bg-white/10 text-gray-300 px-5 py-2.5 rounded-full font-semibold text-sm transition-all" data-cat="bebidas">
+        <button class="cat-pill flex-shrink-0 flex items-center gap-2 bg-white/5 hover:bg-white/10 text-gray-300 px-5 py-2.5 rounded-2xl font-semibold text-sm" data-cat="bebidas">
             <span>🥤</span> Bebidas
         </button>
-        <button class="filter-btn flex-shrink-0 flex items-center gap-2 bg-white/5 hover:bg-white/10 text-gray-300 px-5 py-2.5 rounded-full font-semibold text-sm transition-all" data-cat="extras">
+        <button class="cat-pill flex-shrink-0 flex items-center gap-2 bg-white/5 hover:bg-white/10 text-gray-300 px-5 py-2.5 rounded-2xl font-semibold text-sm" data-cat="extras">
             <span>🧄</span> Extras
         </button>
     </section>
 
-    <section id="products" class="grid grid-cols-1 sm:grid-cols-2 gap-5 pb-12"></section>
+    <!-- Section title -->
+    <div class="flex items-baseline justify-between fade-up" style="animation-delay: 0.5s">
+        <h2 class="font-display text-2xl md:text-3xl font-bold">Nuestro menú</h2>
+        <span id="product-count" class="text-sm text-gray-500"></span>
+    </div>
 
-    <section class="glass-panel rounded-3xl p-6 space-y-5 mb-8 fade-up">
-        <h3 class="flex items-center gap-2 text-lg font-bold text-white">
-            <i class="fa-solid fa-store text-red-500"></i> Información del local
+    <!-- Products grid -->
+    <section id="products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pb-8"></section>
+
+    <!-- Store info -->
+    <section class="glass rounded-3xl p-6 space-y-5 fade-up">
+        <h3 class="flex items-center gap-2 text-lg font-bold font-display">
+            <i class="fa-solid fa-store text-orange-400"></i> Información del local
         </h3>
-        <div class="space-y-4">
-            <a href="#" class="group flex items-start gap-4 p-2 -mx-2 rounded-xl hover:bg-white/5 transition-colors">
-                <div class="mt-1 w-5 text-center text-gray-500 group-hover:text-gray-300"><i class="fa-solid fa-location-dot"></i></div>
-                <div class="flex-1"><p class="text-gray-300 text-sm md:text-base">Calle 23 #456 entre A y B, La Habana</p></div>
-                <i class="fa-solid fa-chevron-right text-gray-600 text-xs self-center group-hover:text-gray-400"></i>
+        <div class="space-y-3">
+            <a href="#" class="group flex items-center gap-4 p-3 rounded-2xl hover:bg-white/5 transition-all">
+                <div class="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-400 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-location-dot"></i>
+                </div>
+                <div class="flex-1">
+                    <p class="text-xs text-gray-500">Dirección</p>
+                    <p class="text-gray-200 text-sm">Calle 23 #456 entre A y B, La Habana</p>
+                </div>
+                <i class="fa-solid fa-chevron-right text-gray-600 text-xs group-hover:text-orange-400 group-hover:translate-x-1 transition-all"></i>
             </a>
-            <a href="https://wa.me/5312345678" class="group flex items-start gap-4 p-2 -mx-2 rounded-xl hover:bg-white/5 transition-colors">
-                <div class="mt-1 w-5 text-center text-gray-500 group-hover:text-gray-300"><i class="fa-solid fa-phone"></i></div>
-                <div class="flex-1"><p class="text-gray-300 text-sm md:text-base">+53 1234 5678</p></div>
-                <i class="fa-solid fa-chevron-right text-gray-600 text-xs self-center group-hover:text-gray-400"></i>
+            <a href="https://wa.me/5312345678" class="group flex items-center gap-4 p-3 rounded-2xl hover:bg-white/5 transition-all">
+                <div class="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center text-green-400 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-phone"></i>
+                </div>
+                <div class="flex-1">
+                    <p class="text-xs text-gray-500">WhatsApp</p>
+                    <p class="text-gray-200 text-sm">+53 1234 5678</p>
+                </div>
+                <i class="fa-solid fa-chevron-right text-gray-600 text-xs group-hover:text-green-400 group-hover:translate-x-1 transition-all"></i>
             </a>
-            <div class="flex items-start gap-4 p-2 -mx-2 rounded-xl">
-                <div class="mt-1 w-5 text-center text-gray-500"><i class="fa-regular fa-clock"></i></div>
-                <div class="flex-1"><p class="text-emerald-400 text-sm md:text-base font-medium">Abierto · Cierra 23:00</p></div>
+            <div class="group flex items-center gap-4 p-3 rounded-2xl">
+                <div class="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-400">
+                    <i class="fa-regular fa-clock"></i>
+                </div>
+                <div class="flex-1">
+                    <p class="text-xs text-gray-500">Horario</p>
+                    <p class="text-green-400 text-sm font-medium">Abierto · Cierra 23:00</p>
+                </div>
             </div>
         </div>
     </section>
 </main>
 
-<footer class="w-full max-w-[800px] px-6 pb-12 text-center space-y-2 opacity-60">
+<footer class="w-full max-w-[900px] px-6 pb-10 pt-8 text-center space-y-3">
+    <div class="flex justify-center gap-4 mb-4">
+        <a href="#" class="w-10 h-10 rounded-full glass hover:bg-white/10 flex items-center justify-center transition-all hover:-translate-y-1">
+            <i class="fa-brands fa-instagram text-pink-400"></i>
+        </a>
+        <a href="#" class="w-10 h-10 rounded-full glass hover:bg-white/10 flex items-center justify-center transition-all hover:-translate-y-1">
+            <i class="fa-brands fa-facebook text-blue-400"></i>
+        </a>
+        <a href="https://wa.me/5312345678" class="w-10 h-10 rounded-full glass hover:bg-white/10 flex items-center justify-center transition-all hover:-translate-y-1">
+            <i class="fa-brands fa-whatsapp text-green-400"></i>
+        </a>
+    </div>
     <p class="text-xs text-gray-500 font-medium">Pizzas Pipo · Catálogo digital</p>
     <p class="text-[10px] text-gray-600 flex items-center justify-center gap-1">
-        Hecho con <span class="text-orange-500">🍕</span> por Pizzas Pipo
+        Hecho con <span class="text-orange-500">🍕</span> por Pizzas Pipo · © 2026
     </p>
 </footer>
 
-<div id="cart-panel" class="fixed top-0 right-0 h-full w-full sm:w-96 bg-[#1a1a1a] border-l border-white/10 transform translate-x-full transition-transform duration-300 z-50 overflow-y-auto">
-    <div class="p-6 border-b border-white/10 flex justify-between items-center">
-        <h3 class="text-lg font-bold">Tu carrito</h3>
-        <button onclick="toggleCart()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center">
+<!-- Backdrop + Cart -->
+<div id="backdrop" class="backdrop" onclick="toggleCart()"></div>
+<div id="cart-panel" class="cart-panel fixed top-0 right-0 h-full w-full sm:w-[400px] bg-[#14141d] border-l border-white/10 transform translate-x-full z-50 overflow-y-auto">
+    <div class="p-6 border-b border-white/10 flex justify-between items-center sticky top-0 bg-[#14141d]/95 backdrop-blur-xl z-10">
+        <div>
+            <h3 class="text-lg font-bold font-display">Tu carrito</h3>
+            <p id="cart-subtitle" class="text-xs text-gray-500">0 artículos</p>
+        </div>
+        <button onclick="toggleCart()" class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-all hover:rotate-90">
             <i class="fa-solid fa-xmark"></i>
         </button>
     </div>
-    <div id="cart-items" class="p-6 space-y-4"></div>
-    <div class="p-6 border-t border-white/10 sticky bottom-0 bg-[#1a1a1a]">
-        <div class="flex justify-between mb-4">
-            <span class="text-gray-400">Total</span>
-            <span id="cart-total" class="text-2xl font-bold">$0</span>
+    <div id="cart-items" class="p-5 space-y-3"></div>
+    <div class="p-5 border-t border-white/10 sticky bottom-0 bg-[#14141d]/95 backdrop-blur-xl">
+        <div class="space-y-2 mb-4">
+            <div class="flex justify-between text-sm">
+                <span class="text-gray-400">Subtotal</span>
+                <span id="cart-subtotal" class="text-gray-200">$0</span>
+            </div>
+            <div class="flex justify-between text-sm">
+                <span class="text-gray-400">Envío</span>
+                <span class="text-green-400">Gratis</span>
+            </div>
+            <div class="flex justify-between pt-2 border-t border-white/5">
+                <span class="font-bold">Total</span>
+                <span id="cart-total" class="text-2xl font-bold gradient-text">$0</span>
+            </div>
         </div>
-        <a href="https://wa.me/5312345678" id="checkout-btn" class="btn-glow-green block text-center bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-full font-semibold transition-all">
+        <a href="#" id="checkout-btn" class="btn-shimmer block text-center bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-500 hover:to-emerald-400 text-white px-6 py-3.5 rounded-2xl font-semibold transition-all shadow-lg shadow-green-900/30">
             <i class="fa-brands fa-whatsapp mr-2"></i>Pedir por WhatsApp
         </a>
     </div>
 </div>
 
+<!-- Toast -->
+<div id="toast" class="toast">
+    <i class="fa-solid fa-check-circle"></i>
+    <span id="toast-text">Añadido al carrito</span>
+</div>
+
 <script>
+// Inline SVG product images (data URIs) - guaranteed to load
+const IMG = {
+    pizza: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23FFD700"/><circle cx="50" cy="50" r="45" fill="none" stroke="%23CC8800" stroke-width="2"/><circle cx="35" cy="35" r="5" fill="%23DC143C"/><circle cx="65" cy="40" r="5" fill="%23DC143C"/><circle cx="40" cy="65" r="5" fill="%23DC143C"/><circle cx="60" cy="65" r="4" fill="%23DC143C"/><circle cx="50" cy="50" r="3" fill="%23DC143C"/><ellipse cx="30" cy="55" rx="4" ry="2" fill="%236B8E23"/><ellipse cx="70" cy="55" rx="4" ry="2" fill="%236B8E23"/></svg>',
+    pepperoni: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23FFD700"/><circle cx="50" cy="50" r="45" fill="none" stroke="%23CC8800" stroke-width="2"/><circle cx="35" cy="35" r="7" fill="%23B22222"/><circle cx="65" cy="40" r="7" fill="%23B22222"/><circle cx="40" cy="65" r="7" fill="%23B22222"/><circle cx="65" cy="65" r="7" fill="%23B22222"/><circle cx="50" cy="50" r="5" fill="%23B22222"/></svg>',
+    cheese: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23FFFACD"/><circle cx="50" cy="50" r="45" fill="none" stroke="%23DAA520" stroke-width="2"/><circle cx="30" cy="40" r="6" fill="%23F5DEB3"/><circle cx="60" cy="50" r="7" fill="%23F5DEB3"/><circle cx="40" cy="65" r="5" fill="%23F5DEB3"/><circle cx="70" cy="35" r="4" fill="%23F5DEB3"/><circle cx="50" cy="50" r="3" fill="%23B8860B"/></svg>',
+    hawaiian: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23FFD700"/><circle cx="50" cy="50" r="45" fill="none" stroke="%23CC8800" stroke-width="2"/><circle cx="35" cy="35" r="6" fill="%23FFB6C1"/><circle cx="65" cy="40" r="6" fill="%23FFB6C1"/><circle cx="40" cy="65" r="6" fill="%23FFB6C1"/><circle cx="60" cy="65" r="5" fill="%23FFB6C1"/><rect x="48" y="35" width="6" height="10" fill="%23FF6B6B"/><rect x="35" y="55" width="6" height="10" fill="%23FF6B6B"/></svg>',
+    diabola: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23FFD700"/><circle cx="50" cy="50" r="45" fill="none" stroke="%23CC8800" stroke-width="2"/><circle cx="35" cy="35" r="6" fill="%238B0000"/><circle cx="65" cy="40" r="6" fill="%238B0000"/><circle cx="40" cy="65" r="6" fill="%238B0000"/><circle cx="60" cy="65" r="5" fill="%238B0000"/><circle cx="50" cy="50" r="4" fill="%238B0000"/><path d="M30 50 L25 45 M70 50 L75 45 M50 30 L45 25 M50 70 L45 75" stroke="%23FF4500" stroke-width="2"/></svg>',
+    marinara: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23FF6347"/><circle cx="50" cy="50" r="45" fill="none" stroke="%238B0000" stroke-width="2"/><ellipse cx="35" cy="40" rx="5" ry="3" fill="%2390EE90"/><ellipse cx="65" cy="45" rx="5" ry="3" fill="%2390EE90"/><ellipse cx="45" cy="65" rx="5" ry="3" fill="%2390EE90"/><ellipse cx="60" cy="60" rx="4" ry="2" fill="%2390EE90"/></svg>',
+    soda: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="30" y="20" width="40" height="65" rx="4" fill="%23DC143C"/><rect x="30" y="20" width="40" height="65" rx="4" fill="none" stroke="%238B0000" stroke-width="2"/><rect x="35" y="35" width="30" height="20" fill="%23FFF" opacity="0.3"/><text x="50" y="50" font-family="Arial" font-size="10" font-weight="bold" text-anchor="middle" fill="%23FFF">COLA</text><path d="M40 15 Q45 10 50 15 T60 15" stroke="%23FFF" stroke-width="2" fill="none" opacity="0.5"/></svg>',
+    water: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="35" y="25" width="30" height="60" rx="3" fill="%2387CEEB" opacity="0.6"/><rect x="35" y="25" width="30" height="60" rx="3" fill="none" stroke="%234169E1" stroke-width="2"/><rect x="38" y="35" width="24" height="15" fill="%23FFF" opacity="0.4"/><text x="50" y="60" font-family="Arial" font-size="6" font-weight="bold" text-anchor="middle" fill="%234169E1">H2O</text></svg>',
+    garlic: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><ellipse cx="50" cy="55" rx="25" ry="30" fill="%23F5F5DC"/><ellipse cx="50" cy="55" rx="25" ry="30" fill="none" stroke="%23BDB76B" stroke-width="2"/><path d="M50 25 L50 15 M45 25 L40 15 M55 25 L60 15" stroke="%23228B22" stroke-width="2"/><line x1="40" y1="55" x2="60" y2="55" stroke="%23BDB76B" stroke-width="1"/><line x1="50" y1="40" x2="50" y2="70" stroke="%23BDB76B" stroke-width="1"/></svg>',
+    cheeseExtra: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="30,80 70,80 80,30 50,20 20,30" fill="%23FFD700"/><polygon points="30,80 70,80 80,30 50,20 20,30" fill="none" stroke="%23B8860B" stroke-width="2"/><circle cx="40" cy="50" r="3" fill="%23FF8C00"/><circle cx="55" cy="60" r="4" fill="%23FF8C00"/><circle cx="60" cy="45" r="2" fill="%23FF8C00"/></svg>'
+};
+
 const products = [
-    { id: 1, name: 'Margarita', desc: 'Tomate, mozzarella fresca, albahaca, aceite de oliva', price: 100, cat: 'pizzas', img: 'https://em-content.zobj.net/source/apple/391/pizza_1f355.png' },
-    { id: 2, name: 'Pepperoni', desc: 'Tomate, mozzarella, pepperoni extra, orégano', price: 120, cat: 'pizzas', img: 'https://em-content.zobj.net/source/apple/391/pizza_1f355.png' },
-    { id: 3, name: 'Cuatro Quesos', desc: 'Mozzarella, gorgonzola, parmesano, provolone', price: 130, cat: 'pizzas', img: 'https://em-content.zobj.net/source/apple/391/pizza_1f355.png' },
-    { id: 4, name: 'Hawaiana', desc: 'Tomate, mozzarella, jamón, piña', price: 115, cat: 'pizzas', img: 'https://em-content.zobj.net/source/apple/391/pizza_1f355.png' },
-    { id: 5, name: 'Diábola', desc: 'Tomate, mozzarella, salchicha picante, chiles', price: 125, cat: 'pizzas', img: 'https://em-content.zobj.net/source/apple/391/pizza_1f355.png' },
-    { id: 6, name: 'Marinara', desc: 'Tomate, ajo, orégano, aceite de oliva (sin queso)', price: 90, cat: 'pizzas', img: 'https://em-content.zobj.net/source/apple/391/pizza_1f355.png' },
-    { id: 7, name: 'Coca-Cola 500ml', desc: 'Bebida refrescante', price: 25, cat: 'bebidas', img: 'https://em-content.zobj.net/source/apple/391/cup-with-straw_1f964.png' },
-    { id: 8, name: 'Agua mineral 500ml', desc: 'Sin gas', price: 15, cat: 'bebidas', img: 'https://em-content.zobj.net/source/apple/391/potable-water_1f6b1.png' },
-    { id: 9, name: 'Ajo extra', desc: 'Salsa de ajo casera', price: 10, cat: 'extras', img: 'https://em-content.zobj.net/source/apple/391/garlic_1f9c4.png' },
-    { id: 10, name: 'Queso extra', desc: 'Mozzarella adicional', price: 20, cat: 'extras', img: 'https://em-content.zobj.net/source/apple/391/cheese-wedge_1f9c0.png' }
+    { id: 1, name: 'Margarita', desc: 'Tomate, mozzarella fresca, albahaca, aceite de oliva', price: 100, cat: 'pizzas', img: IMG.pizza, tag: 'Clásica' },
+    { id: 2, name: 'Pepperoni', desc: 'Tomate, mozzarella, pepperoni extra, orégano', price: 120, cat: 'pizzas', img: IMG.pepperoni, tag: 'Favorita' },
+    { id: 3, name: 'Cuatro Quesos', desc: 'Mozzarella, gorgonzola, parmesano, provolone', price: 130, cat: 'pizzas', img: IMG.cheese, tag: 'Premium' },
+    { id: 4, name: 'Hawaiana', desc: 'Tomate, mozzarella, jamón, piña', price: 115, cat: 'pizzas', img: IMG.hawaiian, tag: '' },
+    { id: 5, name: 'Diábola', desc: 'Tomate, mozzarella, salchicha picante, chiles', price: 125, cat: 'pizzas', img: IMG.diabola, tag: 'Picante' },
+    { id: 6, name: 'Marinara', desc: 'Tomate, ajo, orégano, aceite de oliva (sin queso)', price: 90, cat: 'pizzas', img: IMG.marinara, tag: 'Vegana' },
+    { id: 7, name: 'Coca-Cola 500ml', desc: 'Bebida refrescante bien fría', price: 25, cat: 'bebidas', img: IMG.soda, tag: '' },
+    { id: 8, name: 'Agua mineral 500ml', desc: 'Sin gas, natural', price: 15, cat: 'bebidas', img: IMG.water, tag: '' },
+    { id: 9, name: 'Ajo extra', desc: 'Salsa de ajo casera', price: 10, cat: 'extras', img: IMG.garlic, tag: '' },
+    { id: 10, name: 'Queso extra', desc: 'Mozzarella adicional', price: 20, cat: 'extras', img: IMG.cheeseExtra, tag: '' }
 ];
 
 let cart = JSON.parse(localStorage.getItem('pipo_cart') || '[]');
@@ -174,19 +486,22 @@ function render() {
         (currentCat === 'all' || p.cat === currentCat) &&
         (p.name.toLowerCase().includes(search) || p.desc.toLowerCase().includes(search))
     );
+    document.getElementById('product-count').textContent = filtered.length + ' productos';
     grid.innerHTML = filtered.map((p, i) => `
-        <article class="glass-panel card-hover rounded-3xl p-4 flex flex-col relative group fade-up" style="animation-delay: ${i * 0.05}s">
-            <div class="relative w-full aspect-square rounded-2xl bg-[#161616] mb-4 overflow-hidden flex items-center justify-center">
-                <img src="${p.img}" alt="${p.name}" class="w-24 h-24 object-contain drop-shadow-xl transform group-hover:scale-110 transition-transform duration-500">
+        <article class="product-card glass rounded-3xl p-4 fade-up" style="animation-delay: ${i * 0.06}s">
+            <div class="relative w-full aspect-square rounded-2xl bg-gradient-to-br from-[#1a1a25] to-[#0f0f17] mb-4 overflow-hidden flex items-center justify-center border border-white/5">
+                ${p.tag ? `<span class="absolute top-2 left-2 z-10 text-[10px] font-bold uppercase tracking-wide bg-gradient-to-r from-orange-500 to-red-600 text-white px-2 py-1 rounded-full">${p.tag}</span>` : ''}
+                <img src="${p.img}" alt="${p.name}" class="product-img" loading="lazy">
             </div>
-            <div class="space-y-3 px-1">
-                <div>
-                    <h3 class="text-lg font-bold text-white">${p.name}</h3>
-                    <p class="text-sm text-gray-500 mt-0.5">${p.desc}</p>
-                </div>
+            <div class="space-y-2">
+                <h3 class="text-base font-bold text-white">${p.name}</h3>
+                <p class="text-xs text-gray-500 leading-relaxed min-h-[32px]">${p.desc}</p>
                 <div class="flex items-end justify-between pt-2">
-                    <span class="text-xl font-bold text-white">$${p.price}</span>
-                    <button onclick="addToCart(${p.id})" class="bg-white hover:bg-gray-200 text-black text-sm font-bold px-5 py-2.5 rounded-full flex items-center gap-2 transition-transform active:scale-95 shadow-md">
+                    <div>
+                        <span class="text-[10px] text-gray-600 uppercase">Precio</span>
+                        <div class="text-xl font-bold gradient-text">$${p.price}</div>
+                    </div>
+                    <button onclick="addToCart(${p.id})" class="btn-shimmer bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-400 hover:to-red-500 text-white text-sm font-bold px-4 py-2.5 rounded-xl flex items-center gap-2 transition-all active:scale-90 shadow-lg shadow-orange-900/20">
                         <i class="fa-solid fa-plus text-xs"></i> Pedir
                     </button>
                 </div>
@@ -194,17 +509,30 @@ function render() {
         </article>
     `).join('');
     if (filtered.length === 0) {
-        grid.innerHTML = '<p class="text-gray-500 text-center py-12 col-span-full">No se encontraron productos</p>';
+        grid.innerHTML = '<div class="col-span-full text-center py-16"><i class="fa-solid fa-magnifying-glass text-4xl text-gray-700 mb-4"></i><p class="text-gray-500">No se encontraron productos</p></div>';
     }
+}
+
+function showToast(text) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toast-text').textContent = text;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
 }
 
 function addToCart(id) {
     const p = products.find(x => x.id === id);
     const existing = cart.find(x => x.id === id);
     if (existing) existing.qty++;
-    else cart.push({ ...p, qty: 1 });
+    else cart.push({ id: p.id, name: p.name, price: p.price, img: p.img, qty: 1 });
     localStorage.setItem('pipo_cart', JSON.stringify(cart));
     renderCart();
+    showToast(p.name + ' añadido');
+    // Bounce cart count
+    const count = document.getElementById('cart-count');
+    count.classList.remove('bounce');
+    void count.offsetWidth;
+    count.classList.add('bounce');
 }
 
 function removeFromCart(id) {
@@ -213,44 +541,71 @@ function removeFromCart(id) {
     renderCart();
 }
 
+function changeQty(id, delta) {
+    const item = cart.find(x => x.id === id);
+    if (!item) return;
+    item.qty += delta;
+    if (item.qty <= 0) cart = cart.filter(x => x.id !== id);
+    localStorage.setItem('pipo_cart', JSON.stringify(cart));
+    renderCart();
+}
+
 function renderCart() {
     const items = document.getElementById('cart-items');
     const count = cart.reduce((s, x) => s + x.qty, 0);
-    const total = cart.reduce((s, x) => s + x.qty * x.price, 0);
+    const subtotal = cart.reduce((s, x) => s + x.qty * x.price, 0);
     const countEl = document.getElementById('cart-count');
     countEl.textContent = count;
     countEl.classList.toggle('hidden', count === 0);
-    document.getElementById('cart-total').textContent = '$' + total;
+    document.getElementById('cart-subtitle').textContent = count + (count === 1 ? ' artículo' : ' artículos');
+    document.getElementById('cart-subtotal').textContent = '$' + subtotal;
+    document.getElementById('cart-total').textContent = '$' + subtotal;
     items.innerHTML = cart.length === 0 
-        ? '<p class="text-gray-500 text-center py-12">Tu carrito está vacío</p>'
+        ? '<div class="text-center py-16"><i class="fa-solid fa-cart-shopping text-4xl text-gray-700 mb-4"></i><p class="text-gray-500">Tu carrito está vacío</p></div>'
         : cart.map(p => `
-            <div class="flex items-center gap-4 glass-panel rounded-2xl p-3">
-                <img src="${p.img}" alt="${p.name}" class="w-12 h-12 object-contain">
-                <div class="flex-1">
-                    <h4 class="font-semibold text-sm">${p.name}</h4>
-                    <p class="text-gray-400 text-xs">$${p.price} × ${p.qty}</p>
+            <div class="glass rounded-2xl p-3 flex items-center gap-3 fade-in">
+                <img src="${p.img}" alt="${p.name}" class="w-14 h-14 object-contain rounded-xl bg-white/5 p-1">
+                <div class="flex-1 min-w-0">
+                    <h4 class="font-semibold text-sm truncate">${p.name}</h4>
+                    <p class="text-gray-400 text-xs">$${p.price}</p>
+                    <div class="flex items-center gap-2 mt-1">
+                        <button onclick="changeQty(${p.id}, -1)" class="w-6 h-6 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-xs">−</button>
+                        <span class="text-sm font-semibold w-6 text-center">${p.qty}</span>
+                        <button onclick="changeQty(${p.id}, 1)" class="w-6 h-6 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-xs">+</button>
+                    </div>
                 </div>
-                <button onclick="removeFromCart(${p.id})" class="w-8 h-8 rounded-full bg-red-500/10 hover:bg-red-500/20 text-red-400 flex items-center justify-center">
-                    <i class="fa-solid fa-trash text-xs"></i>
-                </button>
+                <div class="text-right">
+                    <p class="font-bold text-sm">$${p.qty * p.price}</p>
+                    <button onclick="removeFromCart(${p.id})" class="mt-1 w-7 h-7 rounded-full bg-red-500/10 hover:bg-red-500/20 text-red-400 flex items-center justify-center mx-auto">
+                        <i class="fa-solid fa-trash text-xs"></i>
+                    </button>
+                </div>
             </div>
         `).join('');
+    // Update WhatsApp link
+    const waLink = document.getElementById('checkout-btn');
+    if (cart.length > 0) {
+        let msg = 'Hola Pizzas Pipo, quiero pedir:%0A%0A';
+        cart.forEach(p => { msg += `• ${p.qty}x ${p.name} - $${p.qty * p.price}%0A`; });
+        msg += `%0ATotal: $${subtotal}`;
+        waLink.href = 'https://wa.me/5312345678?text=' + msg;
+    } else {
+        waLink.href = '#';
+    }
 }
 
 function toggleCart() {
     const panel = document.getElementById('cart-panel');
+    const backdrop = document.getElementById('backdrop');
     panel.classList.toggle('translate-x-full');
+    backdrop.classList.toggle('open');
 }
 
 document.getElementById('search').addEventListener('input', render);
-document.querySelectorAll('.filter-btn').forEach(btn => {
+document.querySelectorAll('.cat-pill').forEach(btn => {
     btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => {
-            b.classList.remove('bg-white', 'text-black');
-            b.classList.add('bg-white/5', 'text-gray-300', 'hover:bg-white/10');
-        });
-        btn.classList.add('bg-white', 'text-black');
-        btn.classList.remove('bg-white/5', 'text-gray-300', 'hover:bg-white/10');
+        document.querySelectorAll('.cat-pill').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
         currentCat = btn.dataset.cat;
         render();
     });
